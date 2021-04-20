@@ -8,9 +8,17 @@ import (
 func main() {
 	mux := http.NewServeMux() //Create Routing
 
+	aboutHandler := func(w http.ResponseWriter, r *http.Request) {
+		w.Write([]byte("About Page"))
+	}
+
 	mux.HandleFunc("/", homeHandler)
 	mux.HandleFunc("/hello", hiHandler)
 	mux.HandleFunc("/setting", settingHandler)
+	mux.HandleFunc("/about", aboutHandler)
+	mux.HandleFunc("/profile", func(w http.ResponseWriter, r *http.Request) {
+		w.Write([]byte("Halaman Profile"))
+	})
 
 	log.Println("Starting web on port 8080")
 
