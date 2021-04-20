@@ -1,7 +1,6 @@
 package handler
 
 import (
-	"fmt"
 	"html/template"
 	"log"
 	"net/http"
@@ -51,6 +50,19 @@ func ProductHandler(w http.ResponseWriter, r *http.Request) {
 		http.NotFound(w, r)
 		return
 	}
-
-	fmt.Fprintf(w, "Product id Number: %d", idNumb)
+	data := map[string]interface{}{
+		"content": idNumb,
+	}
+	tmpl, err := template.ParseFiles(path.Join("views", "product.html"))
+	if err != nil {
+		log.Println(err)
+		http.Error(w, "Error 505", http.StatusInternalServerError)
+		return
+	}
+	tmpl.Execute(w, data)
+	if err != nil {
+		log.Println(err)
+		http.Error(w, "Error 505", http.StatusInternalServerError)
+		return
+	}
 }
