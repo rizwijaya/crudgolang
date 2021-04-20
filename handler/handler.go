@@ -1,11 +1,11 @@
 package handler
 
 import (
+	"crudgolang/entity"
 	"html/template"
 	"log"
 	"net/http"
 	"path"
-	"strconv"
 )
 
 func HomeHandler(w http.ResponseWriter, r *http.Request) {
@@ -43,16 +43,19 @@ func SettingHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func ProductHandler(w http.ResponseWriter, r *http.Request) {
-	id := r.URL.Query().Get("id")
+	//	id := r.URL.Query().Get("id")
 
-	idNumb, err := strconv.Atoi(id)
-	if err != nil || idNumb < 1 { //Filtering Input Pengguna
-		http.NotFound(w, r)
-		return
-	}
-	data := map[string]interface{}{
-		"content": idNumb,
-	}
+	//idNumb, err := strconv.Atoi(id)
+	// if err != nil || idNumb < 1 { //Filtering Input Pengguna
+	// 	http.NotFound(w, r)
+	// 	return
+	// }
+	// data := map[string]interface{}{
+	// 	"content": idNumb,
+	// }
+
+	data := entity.Product{ID: 1, Name: "Mobilio", Price: 2200000, Stock: 3}
+
 	tmpl, err := template.ParseFiles(path.Join("views", "product.html"))
 	if err != nil {
 		log.Println(err)
