@@ -2,7 +2,10 @@ package handler
 
 import (
 	"fmt"
+	"html/template"
+	"log"
 	"net/http"
+	"path"
 	"strconv"
 )
 
@@ -11,7 +14,25 @@ func HomeHandler(w http.ResponseWriter, r *http.Request) {
 		http.NotFound(w, r)
 		return
 	}
-	w.Write([]byte("Welcome to Home"))
+
+	tmpl, err := template.ParseFiles(path.Join("views", "index.html"))
+	if err != nil {
+		log.Println(err)
+		http.Error(w, "Error 505", http.StatusInternalServerError)
+		return
+	}
+
+	data := map[string]interface{}{
+		"Title":   "Golang Website",
+		"content": "Bahasa Pemprograman Golang",
+	}
+
+	tmpl.Execute(w, data)
+	if err != nil {
+		log.Println(err)
+		http.Error(w, "Error 505", http.StatusInternalServerError)
+		return
+	}
 }
 
 func HiHandler(w http.ResponseWriter, r *http.Request) {
