@@ -1,8 +1,10 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"net/http"
+	"strconv"
 )
 
 func main() {
@@ -19,6 +21,7 @@ func main() {
 	mux.HandleFunc("/profile", func(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte("Halaman Profile"))
 	})
+	mux.HandleFunc("/product", productHandler)
 
 	log.Println("Starting web on port 8080")
 
@@ -40,4 +43,16 @@ func hiHandler(w http.ResponseWriter, r *http.Request) {
 
 func settingHandler(w http.ResponseWriter, r *http.Request) {
 	w.Write([]byte("Menu Setting"))
+}
+
+func productHandler(w http.ResponseWriter, r *http.Request) {
+	id := r.URL.Query().Get("id")
+
+	idNumb, err := strconv.Atoi(id)
+	if err != nil || idNumb < 1 { //Filtering Input Pengguna
+		http.NotFound(w, r)
+		return
+	}
+
+	fmt.Fprintf(w, "Product id Number: %d", idNumb)
 }
